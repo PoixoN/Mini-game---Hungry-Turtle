@@ -9,40 +9,48 @@ namespace Mini_game___Hungry_Turtle
 {
     class Program
     {
-        static void WriteT(int size)
-        {
-            Turtle.Angle = 0;
-            Turtle.Move(size);
-            Turtle.Angle = 270;
-            Turtle.Move(size / 3);
-            Turtle.Angle = 90;
-            Turtle.Move(size * 2 / 3 );
-        }
-        static void WriteO(int size)
-        {
-            Turtle.Angle = 0;
-            for (int i = 0; i < 4; i++)
-            {
-                Turtle.Move(size);
-                Turtle.TurnRight();
-            }
-        }
         static void Main(string[] args)
         {
-            Turtle.Speed = 8;
+            GraphicsWindow.KeyDown += GraphicsWindow_KeyDown;
+            Turtle.PenUp();
+            int eat_x = 200, eat_y = 200;
+            GraphicsWindow.BrushColor = "Red"; 
+            var eat = Shapes.AddRectangle(10, 10);
+            Shapes.Move(eat, eat_x, eat_y);
 
-            Turtle.X = 200;
-            Turtle.Y = 200;
-            WriteT(60);
+            Random rand = new Random();
 
-            Turtle.X = 260;
-            Turtle.Y = 200;
-            WriteO(30);
+            while(true)
+            {
+                Turtle.Move(10);
+                if ((Turtle.X >= eat_x && Turtle.X <= eat_x + 10) && (Turtle.Y >= eat_y && Turtle.Y <= eat_y + 10))
+                {
+                    eat_x = rand.Next(0, GraphicsWindow.Width);
+                    eat_y = rand.Next(0, GraphicsWindow.Height);
+                    Shapes.Move(eat, eat_x, eat_y);
+                }    
+            }
 
-            Turtle.X = 400;
-            Turtle.Y = 200;
-            WriteT(30);
+        }
 
+        private static void GraphicsWindow_KeyDown()
+        {
+            if (GraphicsWindow.LastKey == "Up")
+            {
+                Turtle.Angle = 0;
+            }
+            else if (GraphicsWindow.LastKey == "Down")
+            {
+                Turtle.Angle = 180;
+            }
+            else if (GraphicsWindow.LastKey == "Right")
+            {
+                Turtle.Angle = 90;
+            }
+            else if (GraphicsWindow.LastKey == "Left")
+            {
+                Turtle.Angle = 270;
+            }
         }
     }
 }
